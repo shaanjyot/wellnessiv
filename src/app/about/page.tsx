@@ -57,7 +57,7 @@ export default function AboutPage() {
           <div className="mt-10 grid gap-10 lg:grid-cols-2 lg:items-start lg:gap-12">
             <div className="relative mx-auto aspect-[3/4] w-full max-w-md overflow-hidden rounded-2xl bg-gray-100 shadow-lg lg:mx-0 lg:max-w-none">
               <Image
-                src="/Vivian-Wellness-IV-Drip-Women-in-Business-2024-photos-by-Jordan-Mirchevski-Canberra-Weekly-2.jpg"
+                src="/DSC_2161.jpg"
                 alt="Vivian Vu, founder of Wellness IV Drip and Registered Nurse"
                 fill
                 className="object-cover object-center"

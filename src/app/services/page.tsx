@@ -1,16 +1,23 @@
 'use client';
 
 import Image from 'next/image';
+import { Star } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BookNowTrigger } from '@/components/BookNowTrigger';
+import { ServicePackageCard } from '@/components/ServicePackageCard';
+import {
+  ADDITIONAL_SERVICES,
+  IV_DRIP_ADD_ONS,
+  IV_DRIP_PACKAGES,
+} from '@/data/ivDripPackages';
 
 const bookBtnClass =
   'inline-flex items-center justify-center rounded-lg bg-gradient-to-r from-teal-500 to-amber-500 px-8 py-3.5 text-base font-semibold text-white shadow-md transition-all hover:from-teal-600 hover:to-amber-600 hover:shadow-lg';
 
 const SHOT_ROWS = [
   { name: 'VITAMIN D3 50,000 U', label: 'SHOT', price: '$150' },
-  { name: 'COQ10', label: 'SHOT', price: '$120' },
+  { name: 'COQ10', label: 'SHOT', price: '$129' },
   { name: 'BIOTIN', label: 'SHOT', price: '$49' },
   { name: 'B12', label: 'SHOT', price: '$39' },
 ] as const;
@@ -41,50 +48,84 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Printed menus — signature packages + customised builder */}
+      {/* IV packages — data from clinic vitamin drip menus */}
       <section className="border-b border-gray-100 bg-white py-14 md:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">
-              Vitamin drip menus
+              Professional vitamin therapy delivered by qualified nurses
             </h2>
-            <p className="mx-auto mt-4 max-w-3xl text-lg text-gray-600">
-              Signature IV packages with inclusions and add-ons, plus our customised drip builder
-              and ingredient list — the same menus we use in clinic.
+            <p className="mt-4 text-lg text-gray-600">
+              Signature IV drips and a fully customised builder — pricing and inclusions match our
+              current clinic menus. Expand each card for full inclusions and delivery specs.
             </p>
           </div>
-          <div className="mt-10 space-y-12 md:mt-14 md:space-y-14">
-            <figure className="mx-auto max-w-5xl">
-              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-2xl ring-1 ring-black/5">
-                <Image
-                  src="/menu-vitamin-drip-packages.png"
-                  alt="Wellness IV Drip menu: Focus, Metaboliser, Super Charge, Tranquillity, Cure Me Elixir, Glamour, Limitless Elite packages, add-ons, and pricing"
-                  width={1024}
-                  height={716}
-                  className="h-auto w-full"
-                  sizes="(max-width: 1024px) 100vw, 1024px"
-                  priority
+          <div className="mt-12 grid gap-8 md:grid-cols-2">
+            {IV_DRIP_PACKAGES.map((pkg) => (
+              <div key={pkg.id} className={pkg.id === 'customised' ? 'md:col-span-2' : undefined}>
+                <ServicePackageCard
+                  name={pkg.name}
+                  price={pkg.price}
+                  duration={pkg.duration}
+                  description={pkg.description}
+                  includes={pkg.includes}
+                  specs={pkg.specs}
+                  defaultIncludesOpen={pkg.defaultIncludesOpen}
                 />
               </div>
-              <figcaption className="mt-3 text-center text-sm font-medium text-gray-500">
-                Signature packages &amp; add-ons
-              </figcaption>
-            </figure>
-            <figure className="mx-auto max-w-5xl">
-              <div className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-2xl ring-1 ring-black/5">
-                <Image
-                  src="/menu-vitamin-drip-customised.png"
-                  alt="Customised IV drip pricing by number of vitamins, choose-your-ingredients list, contact details, and The Wellness IV Drip ACT vitamin drip menu cover"
-                  width={1024}
-                  height={713}
-                  className="h-auto w-full"
-                  sizes="(max-width: 1024px) 100vw, 1024px"
-                />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Add-ons from menu */}
+      <section className="border-b border-gray-100 bg-gray-50 py-14 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Add-ons</h2>
+            <p className="mt-3 text-lg text-gray-600">
+              Optional extras you can discuss at booking or during your consult.
+            </p>
+          </div>
+          <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {IV_DRIP_ADD_ONS.map((addon) => (
+              <li
+                key={addon.name}
+                className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
+              >
+                <p className="font-semibold text-gray-900">{addon.name}</p>
+                <p className="mt-2 text-lg font-bold text-teal-600">{addon.price}</p>
+                {addon.note ? (
+                  <p className="mt-2 text-sm text-gray-500">{addon.note}</p>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Additional services — quick formats */}
+      <section className="border-b border-gray-100 bg-white py-14 md:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold text-gray-900 md:text-4xl">Additional services</h2>
+            <p className="mt-3 text-lg text-gray-600">More ways to support your wellness journey</p>
+          </div>
+          <div className="mt-10 grid gap-8 md:grid-cols-3">
+            {ADDITIONAL_SERVICES.map((svc) => (
+              <div
+                key={svc.title}
+                className="flex flex-col items-center rounded-2xl border border-gray-100 bg-gray-50/80 p-8 text-center shadow-sm"
+              >
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-teal-400 to-amber-400 shadow-md">
+                  <Star className="h-7 w-7 text-white" strokeWidth={1.5} aria-hidden />
+                </div>
+                <h3 className="mt-5 text-lg font-bold text-gray-900">{svc.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600">{svc.description}</p>
+                <p className="mt-4 text-lg font-bold text-teal-600">{svc.priceLabel}</p>
+                <p className="mt-1 text-xs font-medium text-gray-500">{svc.detail}</p>
               </div>
-              <figcaption className="mt-3 text-center text-sm font-medium text-gray-500">
-                Customised drips &amp; ingredient options
-              </figcaption>
-            </figure>
+            ))}
           </div>
         </div>
       </section>
@@ -271,7 +312,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Corporation — Corporation.jpg */}
+      {/* Corporation — 14.jpg */}
       <section className="py-16 md:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid items-center gap-12 lg:grid-cols-2">
@@ -296,7 +337,7 @@ export default function ServicesPage() {
             </div>
             <div className="relative order-1 aspect-[4/3] w-full overflow-hidden rounded-2xl bg-gray-100 shadow-xl lg:order-2">
               <Image
-                src="/Corporation.jpg"
+                src="/14.jpg"
                 alt="Corporate wellness and team well-being"
                 fill
                 className="object-cover"

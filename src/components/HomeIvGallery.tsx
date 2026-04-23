@@ -3,24 +3,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import type { IvGallerySlide } from '@/lib/homeIvGalleryData';
 
-const SLIDES = [
-  { src: '/slide1.jpg', alt: 'IV therapy in a comfortable home setting' },
-  { src: '/slide2.jpg', alt: 'Relaxing IV vitamin treatment in clinic' },
-  { src: '/slide3.jpg', alt: 'IV drip session in a modern wellness space' },
-  { src: '/slide4.jpg', alt: 'Personalised IV therapy while at work' },
-  { src: '/slide5.jpg', alt: 'At-home IV drip on the sofa' },
-  { src: '/slide6.jpg', alt: 'Wellness IV Drip at-home treatment' },
-  { src: '/slide7.jpg', alt: 'Qualified nurse providing mobile IV care' },
-  { src: '/slide8.jpg', alt: 'IV therapy at home with family' },
-] as const;
+type HomeIvGalleryProps = {
+  slides: IvGallerySlide[];
+};
 
-export function HomeIvGallery() {
+export function HomeIvGallery({ slides }: HomeIvGalleryProps) {
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState<number | null>(null);
   const touchStartX = useRef<number | null>(null);
 
-  const count = SLIDES.length;
+  const count = slides.length;
   const go = useCallback(
     (dir: -1 | 1) => {
       setActive((i) => (i + dir + count) % count);
@@ -42,6 +36,10 @@ export function HomeIvGallery() {
   );
 
   useEffect(() => {
+    setActive((i) => (count > 0 ? Math.min(i, count - 1) : 0));
+  }, [count]);
+
+  useEffect(() => {
     if (lightbox === null) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -60,6 +58,10 @@ export function HomeIvGallery() {
       window.removeEventListener('keydown', onKey);
     };
   }, [lightbox, closeLightbox, count]);
+
+  if (count === 0) {
+    return null;
+  }
 
   return (
     <>
@@ -115,9 +117,9 @@ export function HomeIvGallery() {
                 className="relative block h-[min(42vh,400px)] w-full cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 sm:h-[min(44vh,420px)] md:h-[min(40vh,440px)]"
                 aria-label={`Open image ${active + 1} of ${count} in lightbox`}
               >
-                {SLIDES.map((slide, i) => (
+                {slides.map((slide, i) => (
                   <div
-                    key={slide.src}
+                    key={`${slide.src}-${i}`}
                     className={`absolute inset-0 transition-opacity duration-500 ease-out ${
                       i === active ? 'opacity-100' : 'pointer-events-none opacity-0'
                     }`}
@@ -130,6 +132,7 @@ export function HomeIvGallery() {
                       className="object-contain object-center"
                       sizes="(max-width: 896px) 100vw, 896px"
                       priority={i === 0}
+                      unoptimized={slide.src.startsWith('http')}
                     />
                   </div>
                 ))}
@@ -137,9 +140,9 @@ export function HomeIvGallery() {
             </div>
 
             <div className="mt-6 flex justify-center gap-2 md:mt-8">
-              {SLIDES.map((_, i) => (
+              {slides.map((_, i) => (
                 <button
-                  key={i}
+                  key={`dot-${i}`}
                   type="button"
                   onClick={() => setActive(i)}
                   className={`h-2 rounded-full transition-all duration-300 ${
@@ -154,9 +157,9 @@ export function HomeIvGallery() {
             </div>
 
             <div className="mt-6 flex gap-3 overflow-x-auto pb-2 md:mt-8 md:justify-center md:overflow-visible">
-              {SLIDES.map((slide, i) => (
+              {slides.map((slide, i) => (
                 <button
-                  key={slide.src}
+                  key={`thumb-${slide.src}-${i}`}
                   type="button"
                   onClick={() => {
                     setActive(i);
@@ -176,6 +179,7 @@ export function HomeIvGallery() {
                     className="object-cover"
                     sizes="64px"
                     aria-hidden
+                    unoptimized={slide.src.startsWith('http')}
                   />
                 </button>
               ))}
@@ -240,12 +244,13 @@ export function HomeIvGallery() {
               onClick={(e) => e.stopPropagation()}
             >
               <Image
-                src={SLIDES[lightbox].src}
-                alt={SLIDES[lightbox].alt}
+                src={slides[lightbox].src}
+                alt={slides[lightbox].alt}
                 fill
                 className="object-contain"
                 sizes="100vw"
                 priority
+                unoptimized={slides[lightbox].src.startsWith('http')}
               />
             </div>
           </div>

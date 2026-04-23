@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BookNowTrigger } from '@/components/BookNowTrigger';
 import { usePageContent } from '@/hooks/usePageContent';
+import { SITE_PHONE_DISPLAY, SITE_PHONE_TEL_HREF } from '@/lib/siteContact';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -70,11 +71,11 @@ export default function ContactPage() {
     );
   }
 
-  const contactInfoList = content?.sections?.['contact_info']?.info_cards || [
+  const rawContactCards = content?.sections?.['contact_info']?.info_cards || [
     {
       icon: 'Phone',
       title: 'Phone',
-      details: '0450 480 698',
+      details: SITE_PHONE_DISPLAY,
       description: 'Call us for immediate assistance'
     },
     {
@@ -96,6 +97,10 @@ export default function ContactPage() {
       description: 'Flexible scheduling available'
     }
   ];
+
+  const contactInfoList = rawContactCards.map((info: { title?: string; details?: string; icon?: string; description?: string }) =>
+    info.title === 'Phone' ? { ...info, details: SITE_PHONE_DISPLAY } : info
+  );
 
   const faqs = content?.sections?.['faqs']?.questions || [
     {
@@ -180,7 +185,15 @@ export default function ContactPage() {
                   {iconMap[info.icon as keyof typeof iconMap] || <CheckCircle className="w-6 h-6 text-teal-500" />}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{info.title}</h3>
-                <p className="text-teal-600 font-semibold mb-2">{info.details}</p>
+                <p className="text-teal-600 font-semibold mb-2">
+                  {info.title === 'Phone' ? (
+                    <a href={SITE_PHONE_TEL_HREF} className="hover:underline">
+                      {info.details}
+                    </a>
+                  ) : (
+                    info.details
+                  )}
+                </p>
                 <p className="text-gray-600 text-sm">{info.description}</p>
               </div>
             ))}
@@ -323,7 +336,9 @@ export default function ContactPage() {
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
                     <Phone className="w-5 h-5" />
-                    <span className="font-semibold">0450 480 698</span>
+                    <a href={SITE_PHONE_TEL_HREF} className="font-semibold hover:underline">
+                      {SITE_PHONE_DISPLAY}
+                    </a>
                   </div>
                   <div className="flex items-center space-x-3">
                     <Mail className="w-5 h-5" />

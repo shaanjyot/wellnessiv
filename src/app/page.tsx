@@ -11,8 +11,10 @@ import { BookNowTrigger } from '@/components/BookNowTrigger';
 import { usePageContent } from '@/hooks/usePageContent';
 import { getHomeAboutMainParagraphs, getIvLeagueBlock } from '@/lib/aboutHome';
 import { stripHtml } from '@/lib/html';
+import { SITE_PHONE_DISPLAY, SITE_PHONE_TEL_HREF } from '@/lib/siteContact';
+import { resolveHomeIvGallerySlides } from '@/lib/homeIvGalleryData';
 
-const SERVICE_SECTION_IMAGES = ['/miv.png', '/Intramuscular.png', '/Corporation.jpg'] as const;
+const SERVICE_SECTION_IMAGES = ['/miv.png', '/Intramuscular.png', '/14.jpg'] as const;
 
 export default function HomePage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,6 +41,7 @@ export default function HomePage() {
   const howItWorks = content?.sections?.['how_it_works'] || {};
   const aboutMainParagraphs = getHomeAboutMainParagraphs(aboutSummary);
   const ivLeague = getIvLeagueBlock(aboutSummary);
+  const ivGallerySlides = resolveHomeIvGallerySlides(content?.sections?.iv_gallery);
   const heroPrimaryHref = hero.cta_primary?.link || '/booking';
   const heroPrimaryOpensModal =
     !hero.cta_primary?.link || hero.cta_primary?.link === '/booking';
@@ -208,7 +211,9 @@ export default function HomePage() {
             <div className="mt-8 flex flex-col items-center gap-4 text-lg">
               <div className="flex items-center justify-center gap-3">
                 <span className="text-2xl" aria-hidden>☎️</span>
-                <span>{aboutSummary.contact_box?.phone || '0450 480 698'}</span>
+                <a href={SITE_PHONE_TEL_HREF} className="hover:underline">
+                  {SITE_PHONE_DISPLAY}
+                </a>
               </div>
               <div className="flex items-center justify-center gap-3">
                 <span className="text-2xl" aria-hidden>📧</span>
@@ -246,7 +251,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <HomeIvGallery />
+      <HomeIvGallery slides={ivGallerySlides} />
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-teal-500 to-amber-500">

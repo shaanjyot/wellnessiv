@@ -68,7 +68,7 @@ export default function Header() {
           <Link href="/" className="flex items-center space-x-3">
             <img
               src="/logo_final_wellness.png"
-              alt="Wellness IV Drip Logo"
+              alt="Wellness IV Drip"
               className="h-12 w-auto"
             />
           </Link>

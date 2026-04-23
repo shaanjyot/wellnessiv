@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { BookNowTrigger } from '@/components/BookNowTrigger';
+import { SITE_PHONE_DISPLAY, SITE_PHONE_TEL_HREF } from '@/lib/siteContact';
 
 export default function Footer() {
   return (
@@ -12,23 +13,18 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-3 mb-4">
-              <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-teal-400 to-amber-400 rounded-full flex items-center justify-center">
-                  <div className="w-8 h-8 bg-gradient-to-r from-teal-500 to-amber-500 rounded-full flex items-center justify-center">
-                    <div className="w-4 h-4 bg-white rounded-full"></div>
-                  </div>
-                </div>
-                <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-teal-400 rounded-full"></div>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-teal-400 font-serif text-xl font-semibold">Wellness</span>
-                <span className="text-amber-400 font-serif text-lg font-bold">IV DRIP</span>
-              </div>
-            </div>
+            <Link href="/" className="mb-4 inline-block">
+              <Image
+                src="/logo_final_wellness.png"
+                alt="Wellness IV Drip"
+                width={939}
+                height={415}
+                className="h-14 w-auto max-w-[280px] sm:max-w-[320px]"
+              />
+            </Link>
             <p className="text-gray-300 mb-6 max-w-md">
               Mobile IV Vitamin Therapy Service delivering bespoke IV drips in comfort.
-              Were an official licensee of IV League Drips, bringing you premium wellness solutions.
+              We are an official licensee of IV League Drips, bringing you premium wellness solutions.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-teal-400 transition-colors">
@@ -71,7 +67,9 @@ export default function Footer() {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-teal-400" />
-                <span className="text-gray-300">0450 480 698</span>
+                <a href={SITE_PHONE_TEL_HREF} className="text-gray-300 hover:text-teal-400 transition-colors">
+                  {SITE_PHONE_DISPLAY}
+                </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-teal-400" />

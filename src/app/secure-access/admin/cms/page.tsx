@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Save, AlertCircle } from 'lucide-react';
+import { Save, AlertCircle, Plus } from 'lucide-react';
+import { IvGallerySectionEditor } from '@/components/cms/IvGallerySectionEditor';
+import type { IvGallerySlide } from '@/lib/homeIvGalleryData';
 
 interface Page {
   id: string;
@@ -55,13 +57,45 @@ export default function CMSEditor() {
   }, [selectedPage]);
 
   const handleContentChange = (sectionId: string, newContentString: string) => {
-    // Just update the local state for editing
     setSections(prev => prev.map(s => {
       if (s.id === sectionId) {
-        return { ...s, content: newContentString }; // Temporarily store as string for textarea
+        return { ...s, content: newContentString };
       }
       return s;
     }));
+  };
+
+  const handleGallerySlidesChange = (sectionId: string, slides: IvGallerySlide[]) => {
+    setSections(prev =>
+      prev.map(s => (s.id === sectionId ? { ...s, content: { slides } } : s))
+    );
+  };
+
+  const handleAddIvGallerySection = async () => {
+    if (!selectedPage) return;
+    setSaving(true);
+    setJsonError(null);
+    try {
+      const res = await fetch('/api/cms/sections', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          page_id: selectedPage.id,
+          section_key: 'iv_gallery',
+          title: 'Home IV Gallery',
+          content: { slides: [] },
+          display_order: 50,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Failed to create section');
+      const refreshed = await fetch(`/api/cms/sections?pageId=${selectedPage.id}`).then(r => r.json());
+      setSections(refreshed.sections);
+    } catch (e: unknown) {
+      setJsonError(e instanceof Error ? e.message : 'Failed to add gallery section');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleSave = async (section: Section) => {
@@ -141,6 +175,23 @@ export default function CMSEditor() {
                 <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">{selectedPage.title}</h2>
                   <p className="text-gray-500 text-sm">Update content sections for this page.</p>
+                  {selectedPage.slug === 'home' &&
+                    !sections.some((s) => s.section_key === 'iv_gallery') && (
+                      <div className="mt-4 rounded-lg border border-teal-200 bg-teal-50/80 p-4">
+                        <p className="text-sm text-gray-700">
+                          Manage the home page IV image carousel (uploads go to Supabase Storage).
+                        </p>
+                        <button
+                          type="button"
+                          onClick={handleAddIvGallerySection}
+                          disabled={saving}
+                          className="mt-3 inline-flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white hover:bg-teal-700 disabled:opacity-50"
+                        >
+                          <Plus className="h-4 w-4" aria-hidden />
+                          Add home IV gallery section
+                        </button>
+                      </div>
+                    )}
                 </div>
 
                 {loading ? (
@@ -164,26 +215,45 @@ export default function CMSEditor() {
                         </div>
                       </div>
                       <div className="p-6">
-                        <label className="block text-sm font-medium text-gray-600 mb-2">
-                          Content JSON
-                        </label>
-                        <textarea
-                          rows={12}
-                          className="w-full font-mono text-sm bg-gray-50 border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-teal-500 focus:border-transparent"
-                          value={typeof section.content === 'string'
-                            ? section.content
-                            : JSON.stringify(section.content, null, 2)}
-                          onChange={(e) => handleContentChange(section.id, e.target.value)}
-                        />
+                        {section.section_key === 'iv_gallery' ? (
+                          <>
+                            <IvGallerySectionEditor
+                              section={section}
+                              onSlidesChange={handleGallerySlidesChange}
+                            />
+                            <p className="mt-4 text-xs text-gray-400">
+                              Saving stores <code className="rounded bg-gray-100 px-1">slides</code> in
+                              this section. An empty list keeps the public site on its default
+                              gallery until you add images and save.
+                            </p>
+                          </>
+                        ) : (
+                          <>
+                            <label className="mb-2 block text-sm font-medium text-gray-600">
+                              Content JSON
+                            </label>
+                            <textarea
+                              rows={12}
+                              className="w-full rounded-lg border border-gray-300 bg-gray-50 p-4 font-mono text-sm focus:border-transparent focus:ring-2 focus:ring-teal-500"
+                              value={
+                                typeof section.content === 'string'
+                                  ? section.content
+                                  : JSON.stringify(section.content, null, 2)
+                              }
+                              onChange={(e) => handleContentChange(section.id, e.target.value)}
+                            />
+                            <p className="mt-2 text-xs text-gray-400">
+                              Edit the JSON structure carefully. Changing keys may break the frontend
+                              display.
+                            </p>
+                          </>
+                        )}
                         {jsonError && (
-                          <div className="mt-2 text-red-500 text-sm flex items-center gap-2">
+                          <div className="mt-2 flex items-center gap-2 text-sm text-red-500">
                             <AlertCircle size={16} />
                             {jsonError}
                           </div>
                         )}
-                        <p className="mt-2 text-xs text-gray-400">
-                          Edit the JSON structure carefully. Changing keys may break the frontend display.
-                        </p>
                       </div>
                     </div>
                   ))

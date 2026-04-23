@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import { SITE_PHONE_DISPLAY } from '@/lib/siteContact';
 
 // Email configuration
 const transporter = nodemailer.createTransport({
@@ -62,7 +63,7 @@ const getEmailTemplate = (data: BookingEmailData) => {
               <p>Our qualified nurses will contact you within 24 hours to confirm your appointment and discuss any specific requirements you may have.</p>
 
               <p>If you have any immediate questions, please don't hesitate to reach out:</p>
-              <p>📞 <strong>Phone:</strong> 0450 480 698<br>
+              <p>📞 <strong>Phone:</strong> ${SITE_PHONE_DISPLAY}<br>
               📧 <strong>Email:</strong> admin@wellnessivdrip.com.au</p>
             </div>
             <div class="footer">
@@ -123,7 +124,7 @@ const getEmailTemplate = (data: BookingEmailData) => {
 
               <p><strong>Need to reschedule or have questions?</strong><br>
               Please contact us at least 24 hours before your appointment:</p>
-              <p>📞 <strong>Phone:</strong> 0450 480 698<br>
+              <p>📞 <strong>Phone:</strong> ${SITE_PHONE_DISPLAY}<br>
               📧 <strong>Email:</strong> admin@wellnessivdrip.com.au</p>
 
               <p>We look forward to providing you with premium IV therapy services!</p>
@@ -179,7 +180,7 @@ const getEmailTemplate = (data: BookingEmailData) => {
 
               <p><strong>Book Your Next Session</strong><br>
               Regular IV therapy can help maintain optimal wellness. Contact us to schedule your next appointment:</p>
-              <p>📞 <strong>Phone:</strong> 0450 480 698<br>
+              <p>📞 <strong>Phone:</strong> ${SITE_PHONE_DISPLAY}<br>
               📧 <strong>Email:</strong> admin@wellnessivdrip.com.au</p>
 
               <p>We'd love to hear about your experience! Your feedback helps us continue to provide exceptional service.</p>
@@ -231,7 +232,7 @@ const getEmailTemplate = (data: BookingEmailData) => {
 
               <p><strong>Ready to Book Again?</strong><br>
               Contact us anytime to schedule a new appointment:</p>
-              <p>📞 <strong>Phone:</strong> 0450 480 698<br>
+              <p>📞 <strong>Phone:</strong> ${SITE_PHONE_DISPLAY}<br>
               📧 <strong>Email:</strong> admin@wellnessivdrip.com.au</p>
 
               <p>We hope to serve you in the future and help you achieve your wellness goals.</p>

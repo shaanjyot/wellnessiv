@@ -34,11 +34,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File size too large. Maximum size is 5MB.' }, { status: 400 });
     }
 
-    // Generate unique filename
+    // Folder: gallery (home IV carousel) vs blog — only allow known prefixes
+    const prefixRaw = String(formData.get('prefix') ?? '').trim();
+    const folder =
+      prefixRaw === 'gallery-images' ? 'gallery-images' : 'blog-images';
+
     const timestamp = Date.now();
     const randomString = Math.random().toString(36).substring(2, 15);
     const fileExtension = file.name.split('.').pop();
-    const fileName = `blog-images/${timestamp}-${randomString}.${fileExtension}`;
+    const fileName = `${folder}/${timestamp}-${randomString}.${fileExtension}`;
 
     // Convert file to buffer
     const arrayBuffer = await file.arrayBuffer();

@@ -68,3 +68,63 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: 'Failed to update section' }, { status: 500 });
   }
 }
+
+// POST /api/cms/sections — create a section (e.g. bootstrap `iv_gallery` for home)
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { page_id, section_key, title, content, display_order } = body as {
+      page_id?: string;
+      section_key?: string;
+      title?: string;
+      content?: Record<string, unknown>;
+      display_order?: number;
+    };
+
+    if (!page_id || !section_key) {
+      return NextResponse.json(
+        { error: 'page_id and section_key are required' },
+        { status: 400 }
+      );
+    }
+
+    const { createClient } = require('@supabase/supabase-js');
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
+    const { data: existing } = await supabaseAdmin
+      .from('page_sections')
+      .select('id')
+      .eq('page_id', page_id)
+      .eq('section_key', section_key)
+      .maybeSingle();
+
+    if (existing) {
+      return NextResponse.json(
+        { error: 'A section with this key already exists for this page' },
+        { status: 409 }
+      );
+    }
+
+    const { data: section, error } = await supabaseAdmin
+      .from('page_sections')
+      .insert({
+        page_id,
+        section_key,
+        title: title || section_key,
+        content: content ?? {},
+        display_order: display_order ?? 50,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return NextResponse.json({ success: true, section });
+  } catch (error) {
+    console.error('Error creating section:', error);
+    return NextResponse.json({ error: 'Failed to create section' }, { status: 500 });
+  }
+}
