@@ -71,7 +71,7 @@ export default function HomePage() {
             {hero.heading || 'Mobile IV Vitamin Therapy Service'}
           </h1>
           <h2 className="text-2xl md:text-3xl font-light mb-8 text-teal-200">
-            {hero.subheading || 'Tailored IV drips - Delivered in comfort and care'}
+            {hero.subheading || 'Tailored IV drips - Delivered in ultimate comfort and care'}
           </h2>
           <p className="text-xl mb-8 text-gray-200 max-w-2xl mx-auto">
             {hero.description || 'Welcome to Wellness IV Drip Canberra. Need to have a drip today? Book in for a free consultation with our nurses.'}

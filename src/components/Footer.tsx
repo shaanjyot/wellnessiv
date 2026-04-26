@@ -23,7 +23,7 @@ export default function Footer() {
               />
             </Link>
             <p className="text-gray-300 mb-6 max-w-md">
-              Mobile IV Vitamin Therapy Service delivering bespoke IV drips in comfort.
+              Mobile IV Vitamin Therapy Service delivering tailored IV drips in comfort and care.
               We are an official licensee of IV League Drips, bringing you premium wellness solutions.
             </p>
             <div className="flex space-x-4">
@@ -79,24 +79,6 @@ export default function Footer() {
                 <MapPin className="w-5 h-5 text-teal-400" />
                 <span className="text-gray-300">Canberra, Australia</span>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10 border-t border-gray-800 pt-10">
-          <p className="mb-4 text-center text-sm font-semibold uppercase tracking-wide text-teal-400">
-            Official mark
-          </p>
-          <div className="flex justify-center">
-            <div className="rounded-2xl bg-white p-6 shadow-xl ring-1 ring-white/20 sm:p-8">
-              <Image
-                src="/license.png"
-                alt="The Wellness IV Drip ACT Logo"
-                width={320}
-                height={320}
-                className="mx-auto h-auto w-full max-w-[220px] sm:max-w-[260px] md:max-w-[300px]"
-                sizes="(max-width: 768px) 220px, 300px"
-              />
             </div>
           </div>
         </div>

@@ -34,7 +34,7 @@ export const IV_DRIP_PACKAGES: IvDripPackage[] = [
     ],
     specs: [
       'Administered by a qualified nurse',
-      'Mobile, office, or in-clinic (Kingston, ACT)',
+      'Mobile, office, or in-clinic',
       'Health screening prior to treatment',
     ],
     defaultIncludesOpen: true,
