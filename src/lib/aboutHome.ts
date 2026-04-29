@@ -43,7 +43,7 @@ export function getIvLeagueBlock(aboutSummary: {
   return {
     url: aboutSummary.iv_league_url || "https://ivleaguedrips.com/",
     lead:
-      aboutSummary.iv_league_lead || "We are an official licensee of",
+      aboutSummary.iv_league_lead || "",
     linkLabel: aboutSummary.iv_league_link_label || "IV League Drips",
   };
 }
