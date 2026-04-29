@@ -113,7 +113,7 @@ export default function ContactPage() {
     },
     {
       question: 'Is IV therapy safe?',
-      answer: 'Yes, IV therapy is generally safe when administered by qualified medical professionals. Our nurses are fully trained and licensed, and we conduct thorough health assessments before treatment.'
+      answer: 'Yes, IV therapy is generally safe when administered by qualified nursing professionals. Our nurses are fully trained and licensed, and we conduct thorough health assessments before treatment.'
     },
     {
       question: 'What areas do you service?',

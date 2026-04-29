@@ -53,7 +53,6 @@ A modern, responsive Next.js website for Wellness IV Drip, a mobile IV vitamin t
    ```
 
 3. **Set up Supabase**
-
    - Create a new project at [supabase.com](https://supabase.com)
    - Go to Settings > API to get your project URL and anon key
    - Run the SQL schema from `supabase-schema.sql` in your Supabase SQL editor
@@ -204,7 +203,7 @@ This project is licensed under the MIT License.
 
 For support or questions, contact:
 
-- **Phone**: 0449 988 396
+- **Phone**: 0449 988 386
 - **Email**: admin@wellnessivdrip.com.au
 
 ---

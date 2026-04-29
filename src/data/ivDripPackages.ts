@@ -206,7 +206,7 @@ export const IV_DRIP_ADD_ONS: IvAddOn[] = [
   { name: '+ Additional vitamin add-on', price: '$29' },
   {
     name: '+ NAD+',
-    price: 'From $375',
+    price: 'From $389',
     note: 'Popular for anti-ageing and cellular support goals — enquire for suitability',
   },
   { name: '+ Vitamin D shot', price: '$150' },

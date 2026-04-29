@@ -15,7 +15,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "Wellness IV Drip - Mobile IV Vitamin Therapy Service",
-  description: "Professional mobile IV vitamin therapy service in Canberra. Tailored IV drips delivered in comfort by qualified nurses. Official licensee of IV League Drips.",
+  description: "Professional mobile IV vitamin therapy service in Canberra. Tailored IV drips delivered in comfort by qualified nurses.",
   keywords: "IV therapy, vitamin drips, mobile IV, wellness, Canberra, hydration therapy, energy boost, immunity support",
   authors: [{ name: "Wellness IV Drip" }],
   openGraph: {
